@@ -65,8 +65,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mapLayoutDB',
-        'USER': 'hillson',
-        'PASSWORD': 'pass',
+        'USER': 'postgres',
+        'PASSWORD': 'LAMsal75',
         'HOST': 'localhost',
         'PORT': '5432',
     }
