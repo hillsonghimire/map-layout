@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'layoutApp',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -63,10 +65,10 @@ WSGI_APPLICATION = 'mapLayout.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'mapLayoutDB',
-        'USER': 'hillson',
-        'PASSWORD': 'pass',
+        'USER': 'postgres',
+        'PASSWORD': 'roger',
         'HOST': 'localhost',
         'PORT': '5432',
     }
