@@ -4,4 +4,6 @@ from . import templates
 
 def index(request):
     return render(request,"layoutApp/index.html")
-    
+
+def District(request):
+    return render()
