@@ -3,6 +3,7 @@ from django.contrib.gis.db import models as gis_models
 
 # Create your models here.
 
+
 class District(models.Model):
     gid = models.AutoField(primary_key=True)
     # Field renamed because it contained more than one '_' in a row. Field renamed because it started with '_'.
