@@ -1,5 +1,10 @@
-import os
 from pathlib import Path
+import os
+GDAL_LIBRARY_PATH = 'C:/Users/Dany/Desktop/Project/venv/Lib/site-packages/osgeo/gdal302.dll'
+if os.name == 'nt':
+    VENV_BASE = os.environ['VIRTUAL_ENV']
+    os.environ['PATH'] = os.path.join(VENV_BASE, 'Lib\\site-packages\\osgeo') + ';' + os.environ['PATH']
+    os.environ['PROJ_LIB'] = os.path.join(VENV_BASE, 'Lib\\site-packages\\osgeo\\data\\proj') + ';' + os.environ['PATH']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +27,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'layoutApp',
+    'leaflet'
+    
 ]
 
 MIDDLEWARE = [
@@ -61,7 +69,7 @@ WSGI_APPLICATION = 'mapLayout.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'mapLayoutDB',
         'USER': 'postgres',
         'PASSWORD': 'LAMsal75',
@@ -112,3 +120,8 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static/'),
+)

@@ -1,3 +1,10 @@
 body{
     background-color: rgba(0, 255, 255, 0.253);
 }
+#map{
+    width: 100%;
+    height: 95vh;
+}
+#form{
+    color: blue;
+}
