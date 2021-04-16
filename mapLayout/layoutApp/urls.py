@@ -4,5 +4,6 @@ from .views import district
 
 urlpatterns = [
     path('district/', views.district),
-    path('', views.index)
+    path('', views.index),
+    path('selectDistrict/', views.selectDistrict)
 ]
