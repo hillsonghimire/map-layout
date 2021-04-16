@@ -1,8 +1,11 @@
-import os
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-gjqd%kq$#k=%(qay$4s1#-!s%(6ajih#2)1t)xwf-7#i+t!nas'
@@ -64,8 +67,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'mapLayoutDB',
-        'USER': 'hillson',
-        'PASSWORD': 'pass',
+        'USER': 'postgres',
+        'PASSWORD': 'roger',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -95,7 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Kathmandu'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -108,6 +111,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS= [os.path.join(BASE_DIR,'static/')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
+from .views import district
 
 urlpatterns = [
-    path('districtJson/', views.district),
-    path('', views.index)
+    path('', views.index),
+    path('districtData/',district, name='data')
 ]
