@@ -8,6 +8,6 @@ from . import templates
 def index(request):
     return render(request,'layoutApp/index.html')
 
-def district(request):  #function name should be different from model name
-    districtData = serialize('geojson',District.objects.all())  #conversion of data to geojson format
-    return HttpResponse(districtData,content_type='geojson')
+def district(request):
+    districtData = serialize('geojson', District.objects.all())
+    return HttpResponse(districtData, content_type='application/geojson')
