@@ -27,7 +27,7 @@ async function getJson(url) {
 async function main() {
 	jsondata = await getJson(apiUrl);
 	console.log(jsondata)
-	L.geoJSON(jsondata.feature[0], {
+	L.geoJSON(jsondata, {
 		onEachFeature: function (feature, layer) {
 			layer.bindPopup(feature.properties.first_dist);
 			layer.on('click', function (event) {
