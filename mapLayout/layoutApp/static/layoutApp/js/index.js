@@ -18,5 +18,7 @@
 
     // loading data to leaflet from db
     fetch("http://127.0.0.1:8000/districtData/")
-        .then((response) => response.json())
-        .then((responsedata)=> L.geoJSON(responsedata).addTo(map));
+        .then((response) => response.json())    
+        .then((responsedata)=> { console.log(responsedata);
+            L.geoJSON(responsedata).addTo(map)
+        });
