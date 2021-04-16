@@ -13,4 +13,4 @@ def index(request):
 
 def district(request):
     districtData = serialize('geojson', District.objects.all())
-    return HttpResponse(districtData, content_type='geojson')
+    return HttpResponse(districtData, content_type='application/geojson')
