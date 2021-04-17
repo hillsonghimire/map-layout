@@ -1,6 +1,6 @@
-var mymap = L.map('map').setView([28, 83], 7);
+var mymap = L.map('map').setView([28, 84],7);
 
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGlsbHNvbmdoaW1pcmUiLCJhIjoiY2treXJ0OG1mMDRjYjJ2bGJnODVla2k0ayJ9.syGn5ve5d3b2-kmax821wg', {
 	maxZoom: 18,
 	id: 'mapbox/streets-v11',
 	tileSize: 512,
@@ -21,11 +21,10 @@ async function main() {
 	console.log(jsondata)
 	L.geoJSON(jsondata, {
 		onEachFeature: function (feature, layer) {
-			layer.bindPopup(feature.properties.first_dist);
+			layer.bindPopup(feature.properties.first_dist + '<br/> <a href="#">Zoom</a>');
 			layer.on('click', function (event) {
-				mymap.setView(event.latlng, 12);
+				// mymap.setView(event.latlng, 12);
 				mymap.fitBounds(layer.getBounds());
-				console.log(event)
 				fetch("http://127.0.0.1:8000/selectDistrict/", {
 					method: "post",
 					headers: {
