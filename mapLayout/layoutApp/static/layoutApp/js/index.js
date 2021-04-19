@@ -1,5 +1,6 @@
 var mymap = L.map('map').setView([28, 84], 7);
 var url = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGlsbHNvbmdoaW1pcmUiLCJhIjoiY2treXJ0OG1mMDRjYjJ2bGJnODVla2k0ayJ9.syGn5ve5d3b2-kmax821wg'
+
 L.tileLayer(String(url), {
 	maxZoom: 18,
 	id: 'mapbox/streets-v11',
@@ -7,62 +8,62 @@ L.tileLayer(String(url), {
 	zoomOffset: -1,
 }).addTo(mymap);
 
-let jsondata = "";
-let apiUrl = "http://127.0.0.1:8000/district/"
+// Fetch Spatial Data from Earth Engine
+var districtFetch = async function () {
+	let response = await fetch("http://127.0.0.1:8000/district/");
+	let districtJSON = await response.json()
+	return districtJSON;
+}
+districtFetch().then(
+	(districtJSON) => {
+		L.geoJson(districtJSON).addTo(mymap);
+	}
 
-async function getJson(url) {
-	let response = await fetch(url);
-	let data = await response.json()
-	return data;
+);
+
+// Fetch Data from Earth Engine
+var EELocation='MUSTANG'
+var EERequirement= 'NDVI'
+const earthEngineFetch = async () => {
+	const response = await fetch("http://127.0.0.1:8000/eeLayer/", {
+		method: "post",
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			"sec-fetch-dest": "empty",
+			"sec-fetch-mode": "cors",
+			"sec-fetch-site": "same-origin",
+			// 'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')  //Currently CSRF has been disabled
+		},
+		//make sure to serialize your JSON body
+		body: JSON.stringify({
+			// csrfmiddlewaretoken: '{{ csrf_token }}',
+			featureName: EELocation,
+			featureRequired: EERequirement,
+			
+		})
+	})
+	const context = await response.json();
+	return String(context.tile)
 }
 
-async function main() {
-	jsondata = await getJson(apiUrl);
-	console.log(jsondata)
-	L.geoJSON(jsondata, {
-		opacity:0.9,
-		onEachFeature: function (feature, layer) {
-			layer.bindPopup(feature.properties.first_dist + '<br/> <a href="#">Zoom</a>');
-			// console.log(feature.geometry.coordinates)
-			layer.on('click', function (event) {
-				// mymap.setView(event.latlng, 12);
-				console.log(event.target.feature.type);
-				mymap.fitBounds(layer.getBounds());
-				const request = async () => {
-					const response = await fetch("http://127.0.0.1:8000/selectDistrict/", {
-						method: "post",
-						headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'application/json',
-							"sec-fetch-dest": "empty",
-							"sec-fetch-mode": "cors",
-							"sec-fetch-site": "same-origin",
-							// 'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')  //Currently CSRF has been disabled
-						},
-						//make sure to serialize your JSON body
-						body: JSON.stringify({
-							// csrfmiddlewaretoken: '{{ csrf_token }}',
-							featureName: event.target.feature.properties.first_dist,
-							featureBoundJSON: feature.geometry.coordinates,
-						})
-					});
-					console.log(feature.geometry.coordinates)
-					const context = await response.json();
-					var eeLayer = L.tileLayer(String(context.tile)).addTo(mymap);
-
-					var baseLayers = {
-						"EE LAYER": eeLayer,
-					};
-
-					L.control.layers(baseLayers).addTo(mymap);
-				}
-
-				request();
-
-			})
-		}
-	}).addTo(mymap)
-};
+earthEngineFetch().then(
+	(EEtileULR) => {
+		L.tileLayer(EEtileULR).addTo(mymap);
+	}
+);
 
 
-main();
+// Fetch Data from Earth Engine
+var overpassFetch = async function () {
+	let response = await fetch("http://127.0.0.1:8000/overpassFetch/");
+	let dataJSON = await response.json()
+	return dataJSON;
+}
+
+overpassFetch().then(
+	(overpassJSON) => {
+		console.log(overpassJSON)
+		L.geoJson(overpassJSON).addTo(mymap)
+	}
+);

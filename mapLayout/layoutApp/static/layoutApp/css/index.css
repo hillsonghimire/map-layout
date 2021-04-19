@@ -12,7 +12,7 @@ header {
 }
 
 #main {
-    height: 92vh;
+    height: 91vh;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
