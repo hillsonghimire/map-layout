@@ -11,7 +11,6 @@ ee.Initialize()
 
 # Create your views here.
 
-
 def index(request):
     return render(request, 'layoutApp/index.html')
 
@@ -20,22 +19,17 @@ def district(request):
     districtData = serialize('geojson', District.objects.all())
     return HttpResponse(districtData, content_type='application/geojson')
 
-
-# def selectDistrict(request):
-#     if request.method == "POST":
-#         received = json.loads(request.body.decode("utf-8"))
-#         print(received)
-#         context = 'HI'
-#     return HttpResponse(context)
-
-# {'featureName': 'MUSTANG', 'featureBoundJSON': [83.96449647893166, 29.33104544585717]}
-
-
 def selectDistrict(request):
     if request.method == "POST":
-        received = json.loads(request.body.decode("utf-8"))
-        # print(received['featureBoundJSON'])
-        geometry = ee.Geometry.MultiPolygon(received['featureBoundJSON'])
+        featureReceived = json.loads(request.body.decode("utf-8"))
+        featureReceivedName = featureReceived['featureName']
+        featureDbInformation=District.objects.filter(first_dist=featureReceivedName)
+
+        featureSerializer = serialize('geojson', featureDbInformation)
+        deserialized = json.loads(featureSerializer)
+        coords = deserialized['features'][0]['geometry']['coordinates']
+
+        geometry = ee.Geometry.MultiPolygon(coords)
         context = {
             "tile": tileFetcher(geometry),
             "band_viz": getVisParam(),
@@ -43,6 +37,7 @@ def selectDistrict(request):
         }
         json_str = json.dumps(context)
         return HttpResponse(json_str)
+
         # Alternative
         # return JsonResponse(context)
 
@@ -50,8 +45,8 @@ def selectDistrict(request):
 def getVisParam():
     viz_param = {
         'min': 0,
-        'max': 9000,
-        'palette': ['FE8374', 'C0E5DE', '3A837C', '034B48', ]}
+        'max': 2000,
+        'palette': ['222222', 'ffffff', '545454', '034B48', ]}
     return viz_param
 
 

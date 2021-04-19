@@ -7,62 +7,43 @@ L.tileLayer(String(url), {
 	zoomOffset: -1,
 }).addTo(mymap);
 
-let jsondata = "";
-let apiUrl = "http://127.0.0.1:8000/district/"
-
-async function getJson(url) {
-	let response = await fetch(url);
-	let data = await response.json()
-	return data;
+var districtFetch = async function () {
+	let response = await fetch("http://127.0.0.1:8000/district/");
+	let districtJSON = await response.json()
+	return districtJSON;
 }
 
-async function main() {
-	jsondata = await getJson(apiUrl);
-	console.log(jsondata)
-	L.geoJSON(jsondata, {
-		opacity:0.9,
-		onEachFeature: function (feature, layer) {
-			layer.bindPopup(feature.properties.first_dist + '<br/> <a href="#">Zoom</a>');
-			// console.log(feature.geometry.coordinates)
-			layer.on('click', function (event) {
-				// mymap.setView(event.latlng, 12);
-				console.log(event.target.feature.type);
-				mymap.fitBounds(layer.getBounds());
-				const request = async () => {
-					const response = await fetch("http://127.0.0.1:8000/selectDistrict/", {
-						method: "post",
-						headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'application/json',
-							"sec-fetch-dest": "empty",
-							"sec-fetch-mode": "cors",
-							"sec-fetch-site": "same-origin",
-							// 'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')  //Currently CSRF has been disabled
-						},
-						//make sure to serialize your JSON body
-						body: JSON.stringify({
-							// csrfmiddlewaretoken: '{{ csrf_token }}',
-							featureName: event.target.feature.properties.first_dist,
-							featureBoundJSON: feature.geometry.coordinates,
-						})
-					});
-					console.log(feature.geometry.coordinates)
-					const context = await response.json();
-					var eeLayer = L.tileLayer(String(context.tile)).addTo(mymap);
+districtFetch().then(
+	(districtJSON) => {
+		L.geoJson(districtJSON).addTo(mymap);
+	}
 
-					var baseLayers = {
-						"EE LAYER": eeLayer,
-					};
+);
 
-					L.control.layers(baseLayers).addTo(mymap);
-				}
+var ndviDist = 'MUSTANG'
+const earthEngineFetch = async () => {
+	const response = await fetch("http://127.0.0.1:8000/selectDistrict/", {
+		method: "post",
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			"sec-fetch-dest": "empty",
+			"sec-fetch-mode": "cors",
+			"sec-fetch-site": "same-origin",
+			// 'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')  //Currently CSRF has been disabled
+		},
+		//make sure to serialize your JSON body
+		body: JSON.stringify({
+			// csrfmiddlewaretoken: '{{ csrf_token }}',
+			featureName: ndviDist,
+		})
+	})
+	const context = await response.json();
+	return String(context.tile)
+}
 
-				request();
-
-			})
-		}
-	}).addTo(mymap)
-};
-
-
-main();
+earthEngineFetch().then(
+	(EEtileULR) => {
+		L.tileLayer(EEtileULR).addTo(mymap);
+	}
+);
