@@ -91,7 +91,6 @@ def tileFetcherNDVI(geom):
 
 
 # Overpass Query API
-
 def overpassFetch(request):
     # This line is missing the operation that we need to do with request. The request is supposed to pass some Query Parameters.
     data = overpassAPI()
