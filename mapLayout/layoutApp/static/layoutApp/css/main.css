@@ -1,9 +1,3 @@
-/* #body{
-    background-color: rgba(0, 255, 255, 0.253); */
-#map{
-    width: 100%;
-    height: 95vh;
-}
 * {
     padding: 0;
     margin: 0;
@@ -12,12 +6,12 @@
 
 }
 
-/* header {
+header {
     height: 8vh;
     margin: 5px 5px 1px 5px;
     background-color: rgb(12, 12, 53);
     color: white;
-}*/
+}
 
 #main {
     height: 92vh;
@@ -26,7 +20,7 @@
     justify-content: space-between;
 }
 
-/* #left-pane {
+#left-pane {
     width: 250px;
     margin: 5px;
     background-color: rgb(46, 9, 9);
@@ -37,10 +31,10 @@
     width: 250px;
     margin: 5px;
     background-color: black;
-} */
+}
 
 #map {
-    margin: 4px 1px 4px 1px;
+    margin: 5px 1px 5px 1px;
     flex-grow: 1;
     background-color: lightskyblue;
 }

@@ -1,11 +1,13 @@
 from django.urls import path
 # from .views import index
-from .views import  province,index 
+from .views import  province,index ,district,ganapa
 
 urlpatterns = [
     path('',index, name='index'),
-    # path('', views.province),
-    path('provinceData',province, name='provinceData'),
+    path('provinceData/',province, name='provinceData'),
+
+    path('districtJson/',district ,name='districtJson'),
+    path('ganapaData/',ganapa ,name='ganapaData')
 
 ]
 
