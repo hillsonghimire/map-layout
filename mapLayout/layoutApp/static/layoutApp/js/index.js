@@ -1,5 +1,6 @@
 var mymap = L.map('map').setView([28, 84], 7);
 var url = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGlsbHNvbmdoaW1pcmUiLCJhIjoiY2treXJ0OG1mMDRjYjJ2bGJnODVla2k0ayJ9.syGn5ve5d3b2-kmax821wg'
+
 L.tileLayer(String(url), {
 	maxZoom: 18,
 	id: 'mapbox/streets-v11',
@@ -7,12 +8,12 @@ L.tileLayer(String(url), {
 	zoomOffset: -1,
 }).addTo(mymap);
 
+// Fetch Spatial Data from Earth Engine
 var districtFetch = async function () {
 	let response = await fetch("http://127.0.0.1:8000/district/");
 	let districtJSON = await response.json()
 	return districtJSON;
 }
-
 districtFetch().then(
 	(districtJSON) => {
 		L.geoJson(districtJSON).addTo(mymap);
@@ -20,9 +21,11 @@ districtFetch().then(
 
 );
 
-var ndviDist = 'MUSTANG'
+// Fetch Data from Earth Engine
+var EELocation='MUSTANG'
+var EERequirement= 'NDVI'
 const earthEngineFetch = async () => {
-	const response = await fetch("http://127.0.0.1:8000/selectDistrict/", {
+	const response = await fetch("http://127.0.0.1:8000/eeLayer/", {
 		method: "post",
 		headers: {
 			'Accept': 'application/json',
@@ -35,7 +38,9 @@ const earthEngineFetch = async () => {
 		//make sure to serialize your JSON body
 		body: JSON.stringify({
 			// csrfmiddlewaretoken: '{{ csrf_token }}',
-			featureName: ndviDist,
+			featureName: EELocation,
+			featureRequired: EERequirement,
+			
 		})
 	})
 	const context = await response.json();
@@ -45,5 +50,20 @@ const earthEngineFetch = async () => {
 earthEngineFetch().then(
 	(EEtileULR) => {
 		L.tileLayer(EEtileULR).addTo(mymap);
+	}
+);
+
+
+// Fetch Data from Earth Engine
+var overpassFetch = async function () {
+	let response = await fetch("http://127.0.0.1:8000/overpassFetch/");
+	let dataJSON = await response.json()
+	return dataJSON;
+}
+
+overpassFetch().then(
+	(overpassJSON) => {
+		console.log(overpassJSON)
+		L.geoJson(overpassJSON).addTo(mymap)
 	}
 );

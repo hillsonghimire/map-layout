@@ -1,9 +1,10 @@
 from django.urls import path
 from . import views
-from .views import district, selectDistrict
+from .views import district, eeLayer, overpassFetch
 
 urlpatterns = [
     path('district/', views.district),
     path('', views.index),
-    path('selectDistrict/', selectDistrict)
+    path('eeLayer/', eeLayer),
+    path('overpassFetch/', overpassFetch)
 ]
