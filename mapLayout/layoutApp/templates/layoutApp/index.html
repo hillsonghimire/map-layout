@@ -26,6 +26,19 @@
 <body>
     <b>GEO PROJECT</b>
     <div id="mapid"></div>
+    <div id="vector" class="select-vector">
+        <form action="vector_Select" method="get">
+            <input type="checkbox" id="school" name="school" onchange="taginfo(School)" />
+            <label for="school">School</label><br>
+            <input type="checkbox" id="Hospital" name="Hospital" onchange="taginfo(Hospital)" />
+            <label for="Hospital">Hospital</label><br>
+            <input type="checkbox" id="Road" name="Road" onchange="taginfo(Road)" />
+            <label for="Road">Road</label><br>
+            <input type="checkbox" id="House" name="House" onchange="taginfo(House)" />
+            <label for="House">House</label><br>
+            <input type="submit" value='Submit' onsubmit="getboundary(????)"/> 
+        </form>
+    </div>
 </body>
 
 </html>
