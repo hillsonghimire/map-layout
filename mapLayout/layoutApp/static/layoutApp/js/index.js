@@ -67,3 +67,55 @@ overpassFetch().then(
 		L.geoJson(overpassJSON).addTo(mymap)
 	}
 );
+
+
+
+
+
+
+// var adminFetch = async function () {
+// 	let response = await fetch("http://127.0.0.1:8000/adminFetch/");
+// 	let adminJSON = await response.json()
+// 	return adminJSON;
+// }
+
+
+
+
+//Test query to the features
+
+// var province = 'pro'
+// var district='dist'
+// var gapa='gapa'
+
+// const adminFetch = async () => {
+// 	const response = await fetch("http://127.0.0.1:8000/adminFetch/", {
+// 		method: "post",
+// 		headers: {
+// 			'Accept': 'application/json',
+// 			'Content-Type': 'application/json',
+// 			"sec-fetch-dest": "empty",
+// 			"sec-fetch-mode": "cors",
+// 			"sec-fetch-site": "same-origin",
+// 			// 'X-CSRF-TOKEN': getCookie('CSRF-TOKEN')  //Currently CSRF has been disabled
+// 		},
+// 		//make sure to serialize your JSON body
+// 		body: JSON.stringify({
+// 			// csrfmiddlewaretoken: '{{ csrf_token }}',
+// 			level0: province,
+// 			level1: district,
+// 			level2: gapa,
+			
+// 		})
+// 	})
+// 	const context = await response.json();
+// 	return String(context.tile)
+// }
+
+
+// districtFetch().then(
+// 	(adminJSON) => {
+// 		L.geoJson(adminJSON).addTo(mymap);
+// 	}
+
+// );

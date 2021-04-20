@@ -6,5 +6,7 @@ urlpatterns = [
     path('district/', views.district),
     path('', views.index),
     path('eeLayer/', eeLayer),
-    path('overpassFetch/', overpassFetch)
+    path('overpassFetch/', overpassFetch),
+    # path('admin/', admin),
+
 ]

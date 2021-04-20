@@ -96,3 +96,34 @@ def overpassFetch(request):
     data = overpassAPI()
     return HttpResponse(data, content_type='application/geojson')
 
+
+
+
+
+
+#To query the features of district and all
+
+
+# def admin(request):
+#     if request.method == "POST":
+#         featureReceived = json.loads(request.body.decode("utf-8"))
+#         level0 = featureReceived['level0']
+#         level1 = featureReceived['level1']
+#         level2 = featureReceived['level2']
+#         featureDbInformation = District.objects.filter(
+#             first_dist=featureReceivedName)
+
+#         featureSerializer = serialize('geojson', featureDbInformation)
+#         deserialized = json.loads(featureSerializer)
+#         coords = deserialized['features'][0]['geometry']['coordinates']
+
+#         geometry = ee.Geometry.MultiPolygon(coords)
+#         context = {
+#             "lovwel": tileFetcherNDVI(geometry),
+#             "band_viz": getVisParamNDVI(),
+#             "title": "Satellite Imagery",
+#         }
+#         json_str = json.dumps(context)
+#         return HttpResponse(json_str)
+#     districtData = serialize('geojson', District.objects.all())
+#     return HttpResponse(districtData, content_type='application/geojson')
