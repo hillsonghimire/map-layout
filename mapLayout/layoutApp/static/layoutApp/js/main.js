@@ -1,39 +1,39 @@
 //global variables
-var district, province, ganapa, FeatureName, returnData, opt, id;
+var district, province, ganapa, FeatureName, returnData, opt, id, b, formdata;
+var a = "";
 
+var mymap = L.map('map', {
+    center: [28.2096, 83.9856],
+    zoom: 7.4,
+    // layers:[mapbox,osm]
 
+});
 
-var mymap = L.map('map')
-mymap.setView([28.2096, 83.9856], 7.4);
-var backgroundLayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGlsbHNvbmdoaW1pcmUiLCJhIjoiY2treXJ0OG1mMDRjYjJ2bGJnODVla2k0ayJ9.syGn5ve5d3b2-kmax821wg', {
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGlsbHNvbmdoaW1pcmUiLCJhIjoiY2treXJ0OG1mMDRjYjJ2bGJnODVla2k0ayJ9.syGn5ve5d3b2-kmax821wg', {
     maxZoom: 18,
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1
+}).addTo(mymap);
+// osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     maxZoom: 19,
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// });
+
+var mymap = L.map('map', {
+    center: [28.2096, 83.9856],
+    zoom: 7.4,
+    // layers:[mapbox,osm]
+
 });
-mymap.addLayer(backgroundLayer);
 
 
+// var baseMaps={
+//     "Mapbox":mapbox,
+//     "Osm":osm
+// };
+// L.control.layers(baseMaps).addTo(mymap);
 
-
-
-
-
-
-let jsondata = "";
-let apiUrl = "http://127.0.0.1:8000/provinceData/"
-
-
-async function getJson(url) {
-    let response = await fetch(url);
-    let data = response.json()
-    return data;
-}
-
-async function main() {
-    jsondata = await getJson(apiUrl)
-    return jsondata;
-}
 
 //function of boundary color
 function polystyle(feature) {
@@ -42,227 +42,120 @@ function polystyle(feature) {
         opacity: 5,
         weight: 2,
         color: 'black', //Outline color
-        fillOpacity: 0
+        fillOpacity: 5
     };
 }
 
 function submitQuery() {
-    var formdata = $("form").serializeArray();
-    console.log(formdata);
-    const a = formdata[1].value;
-    var id = a.toUpperCase();
-    fetch("http://127.0.0.1:8000/ganapaData/", {
-        method: "post",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        //make sure to serialize your JSON body
-        body: JSON.stringify({
-            Gapa_Name: id
+    formdata = $("form").serializeArray();
+    var province=formdata[0].value;
+    var district=formdata[1].value.toUpperCase();
+    var ganapa=formdata[2].value;
+    console.log('top');
+    // console.log(formdata);
+    // if (formdata[2].value == "") {
+    //     a = formdata[1].value.toUpperCase();
+    //     b = "http://127.0.0.1:8000/districtJson/";
+    // } else {
+    //     a = formdata[2].value;
+    //     b = "http://127.0.0.1:8000/ganapaData/";
+        // for (i = 1; i <= 1; i++) {
+        //     var c={};
+        //     for (j = i; j <= 1; j++) {
+        //         a = formdata[2].value;
+        //         b = "http://127.0.0.1:8000/ganapaData/";
+        //         c.key1="a"
+        //         c.key2="b"
+        //         console.log(c);
+
+        //     }
+        //     a = formdata[1].value.toUpperCase();
+        //     console.log(a);
+        //     b = "http://127.0.0.1:8000/ganapaData1/";
+        //     c.key3="a"
+        //     c.key4="b"
+        //     console.log(c);
+        // };
+    // };
+    // if (i == 1) {
+    //     a = formdata[2].value;
+    //     b = "http://127.0.0.1:8000/ganapaData/";
+    //     display();
+    // } else {
+    //     a = formdata[i].value.toUpperCase();
+    //     b = "http://127.0.0.1:8000/districtJson/";
+    //     display();
+    // }
+    //     };
+    // };
+
+
+    // function to fetch data
+    // function display() {
+    //     {
+    //         fetch(b, {
+    //             method: "post",
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 Name: a
+    //             })
+    //         }).then(function (response) {
+    //             return response.json();
+    //         }).then(function (response) {
+    //             responsedData = response;
+    //             console.log(responsedData);
+    //             L.geoJSON(responsedData, {
+    //                 onEachFeature: function (feature, layer) {
+    //                     var coord = feature.geometry.coordinates[0][0][100];
+    //                     console.log(coord);
+    //                     var m = coord[0];
+    //                     var n = coord[1];
+    //                     var z = [n, m];
+    //                     mymap.setView(z, zoom = 9);
+    //                 }
+    //             }, {
+    //                 style: polystyle
+    //             }).addTo(mymap);
+    //         });
+    //     }
+    // }
+    async function display(){
+
+        var response=await fetch("http://127.0.0.1:8000/ganapaData/", {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                level0:province,
+                level1:district,
+                level2:ganapa
+            })
         })
-    }).then(function (response) {
-        return response.json();
-    }).then(function (response) {
-        responsedData = response;
-        console.log(responsedData);
-        L.geoJSON(responsedData
-            // onEachFeature: function (feature, layer) {
-            //     if (feature.properties && feature.properties.first_dist) {
-            //         layer.bindPopup(feature.properties.first_dist, {
-            //             closeButton: false,
-            //             offset: L.point(0, -20)
-            //         });
-            //         layer.on('mouseover', function () {
-            //             layer.openPopup();
-            //         });
-            //         layer.on('mouseout', function () {
-            //             layer.closePopup();
-            //         });
-            //     }
-            //     layer.setStyle({
-            //         fillColor: 'green',
-            //         opacity: 0.99,
-            //         weight: 2,
-            //         color: 'black', //Outline color
-            //         fillOpacity: 0
-            //     });
+        let jsonData=await response.json()
+        return jsonData;
+        }
 
 
 
-            //     },
-            // }, 
-            ).addTo(mymap);
+    display().then((districtData) => {
 
+        console.log(districtData.level0);
 
-    });
-
+        L.geoJSON(districtData.level0).addTo(mymap);
+        // L.geoJSON(districtData, {
+        //     // onEachFeature: function (feature, layer) {
+        //     //     var coord = feature.geometry.coordinates[0][0][100];
+        //     //     console.log(coord);
+        //     //     var m = coord[0];
+        //     //     var n = coord[1];
+        //     //     var z = [n, m];
+        //     //     mymap.setView(z, zoom = 9);
+        //     // }
+        // }).addTo(mymap);
+})
 }
-//Async Function call
-// function submitQuery1() {
-//     main().then(
-//         (dataJSON => {
-//             console.log(dataJSON);
-//             L.geoJSON(dataJSON, {
-//                 onEachFeature: function (feature, layer) {
-//                     // var select = document.getElementById("selectNumber");
-//                     // // Optional: Clear all existing options first:
-//                     // select.innerHTML = "";
-//                     // // Populate list with options
-//                     // for (var i = 0; i < dataJSON.features.length; i++) {
-//                     //      opt = dataJSON.features[i].properties.first_dist;
-//                     //     select.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";
-//                     // }
-//                 }
-//             }).addTo(mymap);
-//         }));
-// }
-// function data()
-
-// //district function
-// function data(x) {
-//     district = new L.geoJSON(responsedData, {
-//         onEachFeature: function (feature, layer) {
-//             if (feature.properties && feature.properties.first_dist) {
-//                 layer.bindPopup(feature.properties.first_dist, {
-//                     closeButton: false,
-//                     offset: L.point(0, -20)
-//                 });
-//                 layer.on('mouseover', function () {
-//                     layer.openPopup();
-//                 });
-//                 layer.on('mouseout', function () {
-//                     layer.closePopup();
-//                 });
-//             }
-//             layer.on('click', function (event) {
-//                 var id = feature.properties.first_dist;
-//                 fetch("http://127.0.0.1:8000/ganapaData/", {
-//                     method: "post",
-//                     headers: {
-//                         'Accept': 'application/json',
-//                         'Content-Type': 'application/json'
-//                     },
-//                     //make sure to serialize your JSON body
-//                     body: JSON.stringify({
-//                         Gapa_Name: id
-//                     })
-//                 }).then(function (response) {
-//                     return response.json();
-//                 }).then(function (response) {
-//                     responsedData = response;
-//                     eachLayer(district);
-//                     // polystyle();
-//                     data1(response); //district function call
-
-
-
-//                 });
-//                 mymap.setView(event.latlng), 17;
-//                 mymap.fitBounds(layer.getBounds());
-//             })
-//         }
-//     }, {
-//         style: polystyle
-//     }).addTo(mymap);
-
-// }
-
-
-
-// //polygon boundary function
-// function polystyle(feature) {
-//     return {
-//         fillColor: 'green',
-//         opacity: 0.99,
-//         weight: 0,
-//         color: '#ffffff', //Outline color
-//         fillOpacity: 0
-//     };
-// }
-
-// function eachLayer(layer) {
-//     mymap.removeLayer(layer);
-// }
-
-
-// //Province data Function
-// function layerData(x) {
-//     var province = new L.geoJSON(jsondata, {
-//         onEachFeature: function (feature, layer) {
-//             if (feature.properties && feature.properties.first_dist) {
-//                 layer.bindPopup(feature.properties.first_dist, {
-//                     closeButton: false,
-//                     offset: L.point(0, -20)
-//                 });
-//                 layer.on('mouseover', function () {
-//                     layer.openPopup();
-//                 });
-//                 layer.on('mouseout', function () {
-//                     layer.closePopup();
-//                 });
-//             }
-//             layer.on('click', function (event) {
-//                 var id = feature.properties.first_stat;
-//                 fetch("http://127.0.0.1:8000/districtJson/", {
-//                     method: "post",
-//                     headers: {
-//                         'Accept': 'application/json',
-//                         'Content-Type': 'application/json'
-//                     },
-//                     //make sure to serialize your JSON body
-//                     body: JSON.stringify({
-//                         Province_Number: id
-//                     })
-//                 }).then(function (response) {
-//                     return response.json();
-//                 }).then(function (response) {
-//                     responsedData = response;
-//                     eachLayer(province);
-//                     data(response); //district function call
-
-
-
-
-
-//                 });
-//                 mymap.setView(event.latlng), 14;
-//                 mymap.fitBounds(layer.getBounds());
-//             })
-//         },
-//     }).addTo(mymap);
-// }
-
-
-
-// //Gapa
-// function data1(x) {
-//     ganapa = new L.geoJSON(responsedData, {
-//         onEachFeature: function (feature, layer) {
-//             if (feature.properties && feature.properties.palika) {
-//                 layer.bindPopup(feature.properties.palika, {
-//                     closeButton: false,
-//                     offset: L.point(0, -20)
-//                 });
-//                 layer.on('mouseover', function () {
-//                     layer.openPopup();
-//                 });
-//                 layer.on('mouseout', function () {
-//                     layer.closePopup();
-//                 });
-//             }
-//         },
-//     }).addTo(mymap);
-// }
-
-
-// var select = document.getElementById("selectNumber"); 
-// var options =  features.length
-// console.log(jdata);
-
-// // Optional: Clear all existing options first:
-// select.innerHTML = "";
-// // Populate list with options:
-// for(var i = 1; i < (jsondata.features.length)+1; i++) {
-//     var opt = jsondata.features[i].properties.first_dist[i];
-//     select.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";

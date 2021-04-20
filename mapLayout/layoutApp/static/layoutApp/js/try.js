@@ -75,6 +75,7 @@ function data(x) {
 
             function showingData(){
                 var onshow= layer.on('click', function (event) {
+
                 var id = feature.properties.first_dist;
                 fetch("http://127.0.0.1:8000/ganapaData/", {
                     method: "post",
@@ -84,7 +85,7 @@ function data(x) {
                     },
                     //make sure to serialize your JSON body
                     body: JSON.stringify({
-                        Gapa_Name: id
+                        Name: id
                     })
                 }).then(function (response) {
                     return response.json();
@@ -140,6 +141,7 @@ function layerData(x) {
                 });
             }
             layer.on('click', function (event) {
+                console.log(event);
                 var id = feature.properties.first_stat;
                 fetch("http://127.0.0.1:8000/districtJson/", {
                     method: "post",
@@ -149,12 +151,13 @@ function layerData(x) {
                     },
                     //make sure to serialize your JSON body
                     body: JSON.stringify({
-                        Province_Number: id
+                        Name: id
                     })
                 }).then(function (response) {
                     return response.json();
                 }).then(function (response) {
                     responsedData = response;
+                    console.log(responsedData);
                     eachLayer(province);
                     data(response); //district function call
 
