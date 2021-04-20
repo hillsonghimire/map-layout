@@ -4,6 +4,6 @@ from .views import district, osmfetcher
 
 urlpatterns = [
     path('', views.index),
-    path('districtData/',district, name='data')
-    path('osmfetch/',osmfetcher, name="osmdata")
+    path('districtData/',district, name='data'),
+    path('osmfetch/',osmfetcher, name="osmdata"),
 ]

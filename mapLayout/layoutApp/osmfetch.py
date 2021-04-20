@@ -7,7 +7,7 @@ import json
 def overpassfetch(amenity, bound):
     url = "https://overpass-api.de/api/xapi?*"
     taginfo = "[amenity="+amenity+"]"  
-    bound = "[bbox="+bound+"]"  
+    bound = "[bbox="+bound+"]" 
     built_query = url + taginfo+bound
     response = requests.get(built_query)
     xml = response.text.encode('UTF-8')
